@@ -13,8 +13,8 @@ type AccountHandler struct {
 	serviceProvider *internal.ServiceProvider
 }
 
-func NewAccountHandler(services *internal.ServiceProvider) *AccountHandler {
-	return &AccountHandler{serviceProvider: services}
+func NewAccountHandler(serviceProvider *internal.ServiceProvider) *AccountHandler {
+	return &AccountHandler{serviceProvider: serviceProvider}
 }
 
 func (h *AccountHandler) Mount(v1 *echo.Group) {
@@ -53,10 +53,9 @@ func (h *AccountHandler) post(c echo.Context) error {
 	}
 
 	service := h.serviceProvider.AccountService(ctx)
-	err := service.CreateAccount(ctx, account)
-	if err != nil {
+	if err := service.CreateAccount(ctx, account); err != nil {
 		return err
 	}
 
-	return nil
+	return c.JSON(http.StatusCreated, account)
 }
