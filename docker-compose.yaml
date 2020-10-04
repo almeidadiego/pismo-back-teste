@@ -16,8 +16,8 @@ services:
     build:
       context: .
       dockerfile: cmd/pismo/Dockerfile
-    volumes:
-      - /home/diego.almeida/projects/go/src/pismo-back-teste:/go/src/pismo-back-teste
+    #volumes:
+    #  - /home/diego.almeida/projects/go/src/pismo-back-teste:/go/src/pismo-back-teste
     ports:
       - '8080:80'
     depends_on:
