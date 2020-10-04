@@ -16,3 +16,7 @@ func NewAccountService(r IAccountRepository) *AccountService {
 func (s *AccountService) GetAccount(ctx context.Context, id int) (dto.Account, error) {
 	return s.repo.GetAccount(ctx, id)
 }
+
+func (s *AccountService) CreateAccount(ctx context.Context, account dto.Account) error {
+	return s.repo.CreateAccount(ctx, account)
+}

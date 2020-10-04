@@ -11,4 +11,5 @@ type IRepositoryProvider interface {
 
 type IAccountRepository interface {
 	GetAccount(ctx context.Context, id int) (dto.Account, error)
+	CreateAccount(ctx context.Context, account dto.Account) error
 }

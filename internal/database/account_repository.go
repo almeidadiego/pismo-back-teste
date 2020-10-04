@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"pismo-back-teste/internal/api/dto"
 )
 
@@ -27,4 +28,24 @@ func (r *AccountRepository) GetAccount(ctx context.Context, id int) (dto.Account
 	default:
 		return account, err // 500
 	}
+}
+
+func (r *AccountRepository) CreateAccount(ctx context.Context, account dto.Account) error {
+	query := `INSERT INTO account (document) values (?)`
+
+	res, err := r.tx.ExecContext(ctx, query, account.Document)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected != 1 {
+		return errors.New("no rows were affected")
+	}
+
+	return nil
 }
