@@ -2,7 +2,8 @@ CREATE TABLE account
   ( 
      id       INT(11) NOT NULL AUTO_INCREMENT, 
      document VARCHAR(14) NOT NULL, 
-     PRIMARY KEY (id) 
+     PRIMARY KEY (id), 
+     CONSTRAINT document_unique UNIQUE (document)
   ); 
 
 CREATE TABLE operation_type 

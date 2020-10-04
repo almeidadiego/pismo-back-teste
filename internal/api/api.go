@@ -20,5 +20,5 @@ func InitRoutes(e *echo.Echo, opts Options) {
 
 	api := e.Group("/api/v1")
 	NewAccountHandler(opts.ServiceProvider).Mount(api)
-	// NewYeahYeah(opts.ServiceProvider).Mount(api)
+	NewTransactionHandler(opts.ServiceProvider).Mount(api)
 }

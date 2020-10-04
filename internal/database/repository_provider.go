@@ -15,3 +15,7 @@ func NewRepositoryProvider() *RepositoryProvider {
 func (p *RepositoryProvider) AccountRepository(ctx context.Context) internal.IAccountRepository {
 	return NewAccountRepository(MustGetTx(ctx))
 }
+
+func (p *RepositoryProvider) TransactionRepository(ctx context.Context) internal.ITransactionRepository {
+	return NewTransactionRepository(MustGetTx(ctx))
+}

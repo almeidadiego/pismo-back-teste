@@ -13,3 +13,7 @@ func NewServiceProvider(r IRepositoryProvider) *ServiceProvider {
 func (s *ServiceProvider) AccountService(ctx context.Context) *AccountService {
 	return NewAccountService(s.repoProvider.AccountRepository(ctx))
 }
+
+func (s *ServiceProvider) TransactionService(ctx context.Context) *TransactionService {
+	return NewTransactionService(s.repoProvider.TransactionRepository(ctx))
+}
