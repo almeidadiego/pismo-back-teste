@@ -16,6 +16,7 @@ func NewTransactionRepository(tx *sql.Tx) *TransactionRepository {
 	return &TransactionRepository{tx: tx}
 }
 
+// CreateTransaction inserts an account to database
 func (r *TransactionRepository) CreateTransaction(
 	ctx context.Context, transaction dto.Transaction) error {
 	query := `INSERT INTO transaction (account_id, operation_type_id, amount, created_at) values (?,?,?,?)`

@@ -43,7 +43,7 @@ func InitDatabase() (*sql.DB, error) {
 	}
 
 	// Open doesn't open a connection. Validate DSN data:
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 30; i++ {
 		err = db.Ping()
 		if err != nil {
 			time.Sleep(time.Second * 5)

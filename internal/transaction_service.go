@@ -14,6 +14,7 @@ func NewTransactionService(r ITransactionRepository) *TransactionService {
 	return &TransactionService{repo: r}
 }
 
+// CreateTransaction saves a new transaction
 func (s *TransactionService) CreateTransaction(
 	ctx context.Context, transaction dto.Transaction) error {
 	checkOperationType(&transaction)

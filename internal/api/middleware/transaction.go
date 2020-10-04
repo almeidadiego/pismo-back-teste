@@ -8,6 +8,9 @@ import (
 	"github.com/labstack/echo"
 )
 
+// RequestTransaction is a Middleware function chained in the HTTP request-response
+// cycle with access to Echo#Context which it uses to perform a specific action. In
+// this case, this function creates a db transaction and adds it to Echo#Context
 func RequestTransaction(db *sql.DB) func(echo.HandlerFunc) echo.HandlerFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {

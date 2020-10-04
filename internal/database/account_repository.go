@@ -7,6 +7,7 @@ import (
 	"pismo-back-teste/internal/api/dto"
 )
 
+// AccountRepository has access to the Account's DB.
 type AccountRepository struct {
 	tx *sql.Tx
 }
@@ -15,6 +16,7 @@ func NewAccountRepository(tx *sql.Tx) *AccountRepository {
 	return &AccountRepository{tx: tx}
 }
 
+// GetAccount retrieves an account from database
 func (r *AccountRepository) GetAccount(ctx context.Context, id int) (dto.Account, error) {
 	account := dto.Account{}
 
@@ -30,6 +32,7 @@ func (r *AccountRepository) GetAccount(ctx context.Context, id int) (dto.Account
 	}
 }
 
+// CreateAccount inserts an account to database
 func (r *AccountRepository) CreateAccount(ctx context.Context, account dto.Account) error {
 	query := `INSERT INTO account (document) values (?)`
 
