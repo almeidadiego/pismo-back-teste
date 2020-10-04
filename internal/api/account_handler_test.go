@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"pismo-back-teste/internal"
@@ -71,7 +72,7 @@ func setupGetAccount() (*httptest.ResponseRecorder, echo.Context) {
 }
 
 func TestGet(t *testing.T) {
-	t.Run("returns an account and status ok", func(t *testing.T) {
+	t.Run("when an account is found, returns an account object and status ok", func(t *testing.T) {
 		rec, c := setupGetAccount()
 		accountResponse := dto.Account{ID: 1, Document: "123456789"}
 		h := NewAccountHandler(fakeServiceProvider(accountResponse, nil))
@@ -84,7 +85,7 @@ func TestGet(t *testing.T) {
 		rec.Body.Reset()
 	})
 
-	t.Run("returns an empty account object and status not found", func(t *testing.T) {
+	t.Run("when an account is not found, returns an empty account object and status not found", func(t *testing.T) {
 		rec, c := setupGetAccount()
 		accountResponse := dto.Account{ID: 0, Document: ""}
 		h := NewAccountHandler(fakeServiceProvider(accountResponse, nil))
@@ -93,6 +94,20 @@ func TestGet(t *testing.T) {
 		if assert.NoError(t, h.get(c)) {
 			assert.Equal(t, http.StatusNotFound, rec.Code)
 			assert.Equal(t, emptyAccountJSON, strings.TrimSuffix(rec.Body.String(), "\n"))
+		}
+	})
+
+	t.Run("when occurred an error on service, handler returns the error", func(t *testing.T) {
+		_, c := setupGetAccount()
+		accountResponse := dto.Account{ID: 0, Document: ""}
+		h := NewAccountHandler(fakeServiceProvider(accountResponse, errors.New("error")))
+
+		expectedError := errors.New("error")
+		err := h.get(c)
+
+		// Assertions
+		if assert.Error(t, err) {
+			assert.Equal(t, expectedError, err)
 		}
 	})
 }
@@ -109,13 +124,26 @@ func setupCreateAccount() (*httptest.ResponseRecorder, echo.Context) {
 }
 
 func TestPost(t *testing.T) {
-	t.Run("saves an account and returns status created", func(t *testing.T) {
+	t.Run("in case of success, saves an account and returns status created", func(t *testing.T) {
 		rec, c := setupCreateAccount()
 		h := NewAccountHandler(fakeServiceProvider(dto.Account{}, nil))
 		// Assertions
 		if assert.NoError(t, h.post(c)) {
 			assert.Equal(t, http.StatusCreated, rec.Code)
 			assert.Equal(t, reqAccountJSON, strings.TrimSuffix(rec.Body.String(), "\n"))
+		}
+	})
+
+	t.Run("in case of fail on service, handler returns the error", func(t *testing.T) {
+		_, c := setupCreateAccount()
+		h := NewAccountHandler(fakeServiceProvider(dto.Account{}, errors.New("error")))
+
+		expectedError := errors.New("error")
+		err := h.post(c)
+
+		// Assertions
+		if assert.Error(t, err) {
+			assert.Equal(t, expectedError, err)
 		}
 	})
 }

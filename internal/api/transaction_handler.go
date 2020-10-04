@@ -1,6 +1,7 @@
 package api
 
 import (
+	"net/http"
 	"pismo-back-teste/internal"
 	"pismo-back-teste/internal/api/dto"
 
@@ -28,10 +29,9 @@ func (h *TransactionHandler) post(c echo.Context) error {
 	}
 
 	service := h.serviceProvider.TransactionService(ctx)
-	err := service.CreateTransaction(ctx, transaction)
-	if err != nil {
+	if err := service.CreateTransaction(ctx, transaction); err != nil {
 		return err
 	}
 
-	return nil
+	return c.JSON(http.StatusCreated, transaction)
 }
