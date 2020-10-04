@@ -1,0 +1,20 @@
+FROM golang:1.15 AS builder
+
+ENV CGO_ENABLED=0
+
+# Move to working directory
+WORKDIR /go/src/pismo-back-teste
+
+# Copy the code into the container
+COPY . .
+
+# Build the application
+RUN go install ./cmd/pismo
+
+# Build a small image
+FROM alpine
+
+COPY --from=builder /go/bin/pismo /usr/local/bin
+
+# Command to run
+ENTRYPOINT ["pismo"]
