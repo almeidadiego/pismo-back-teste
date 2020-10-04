@@ -33,7 +33,7 @@ func main() {
 
 	api.InitRoutes(e, opts)
 
-	errc := make(chan error, 3)
+	errc := make(chan error, 2)
 	quit := make(chan os.Signal, 2)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 

@@ -2,7 +2,7 @@ package internal
 
 import (
 	"context"
-	"errors"
+	"math"
 	"pismo-back-teste/internal/api/dto"
 )
 
@@ -16,19 +16,13 @@ func NewTransactionService(r ITransactionRepository) *TransactionService {
 
 func (s *TransactionService) CreateTransaction(
 	ctx context.Context, transaction dto.Transaction) error {
-	if !correctOperationSign(transaction) {
-		return errors.New(
-			"Wrong operation sign for operation type " + transaction.OperationTypeID.String(),
-		)
-	}
-
+	checkOperationType(&transaction)
 	return s.repo.CreateTransaction(ctx, transaction)
 }
 
-func correctOperationSign(t dto.Transaction) bool {
-	if t.OperationTypeID == dto.Payment {
-		return t.Amount > 0
+func checkOperationType(t *dto.Transaction) {
+	t.Amount = math.Abs(t.Amount)
+	if t.OperationTypeID != dto.Payment {
+		t.Amount = -t.Amount
 	}
-
-	return t.Amount < 0
 }
