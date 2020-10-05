@@ -46,6 +46,6 @@ curl -X GET http://localhost:8080/api/v1/accounts/1
 curl -X POST -d '{"account_id": 1, "operation_type_id": 3, "amount": 53.75}' -H 'Content-Type: application/json' localhost:8080/api/v1/transactions
 ```
 
-### Observações:
+### Observations
 
 The _sql-scripts_ directory is used to create schema and insert operation types in mysql database container.
