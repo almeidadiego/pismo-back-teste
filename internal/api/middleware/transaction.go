@@ -32,7 +32,6 @@ func RequestTransaction(db *sql.DB) func(echo.HandlerFunc) echo.HandlerFunc {
 			nextErr := next(c)
 			if nextErr != nil {
 				if txErr := tx.Rollback(); txErr != nil {
-					// don't want to overwrite err here, just log it
 					fmt.Println(err)
 				}
 				return nextErr
